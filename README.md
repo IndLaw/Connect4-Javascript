@@ -1,4 +1,4 @@
-# You Sunk My Battleship -- <Replace with your name>
+# Connect 4 -- <Replace with your name>
 
 Name: <Full Name>
 Pitt ID: <ID>
