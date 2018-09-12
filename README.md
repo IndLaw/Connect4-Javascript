@@ -1,7 +1,7 @@
 # Connect 4 -- <Replace with your name>
 
-Name: <Full Name>
-Pitt ID: <ID>
+Name: Indiaminah Lawrence
+Pitt ID: inl11
 
 ## Installation
 
