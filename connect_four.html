@@ -2,21 +2,29 @@
 <html>
 	<head>
 		<h1 class=title>Connect Four</h1>
+		<script  type="text/javascript">
+			function wawa() {
+				var variable1 = document.getElementById('p1name_id').value;
+				var variable2 = document.getElementById('p1dob_id').value;
+				document.getElementById('alert1').innerHTML = 'The player 1s name is: ' + variable1;
+				document.getElementById('alert2').innerHTML = 'The player 1s dob is: ' + variable2;
+			}
+
+		</script>
 	</head>
 	<body>
 	
 		<h2 class=title; id=hello>Hello, and welcome to Connect Four!</h2>
-		<h2 class=title; id=instructions>To begin, please enter your name and date of birth.</h2>
-		
-		<form id="frm1" action="/action_page.php">
-			Name: <input type="text" name="name"><br>
-			Date of Birth: <input type="text" name="dob"><br><br>
-			<input type="button" onclick="myFunction()" value="Submit">
+		<h2 class=title; id=instructions=>To begin, please enter your name and date of birth, Player 1.</h1>
+
+		<p id="demo"></p> 
+		<form>
+			<input type="text" id="p1name_id" value="">
+			<input type="text" id="p1dob_id" value="">
+			<input type="button" value="Submit" onclick="wawa()" />
+			<div id="alert1" style="color: red"></div>
+			<div id="alert2" style="color: red"></div>
 		</form>
-		<script>
-			function myFunction() {
-				document.getElementById("frm1").submit();
-}
-		</script>
+
 	</body>
 </html>
