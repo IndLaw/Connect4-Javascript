@@ -8,7 +8,7 @@
 				var variable2 = document.getElementById('p1dob_id').value;
 				document.getElementById('alert1').innerHTML = 'The player 1s name is: ' + variable1;
 				document.getElementById('alert2').innerHTML = 'The player 1s dob is: ' + variable2;
-				dateExtraction(p1dob_id.toString());
+				dateExtraction(p1dob_id);
 				
 			}
 
@@ -19,13 +19,17 @@
 			var dayRegEx = /[.\/ -][ ]*(\d*)[,.\/ -]/;  //Day with non-numeric characters besides, needs to be stripped
 
 			
-			var month = monthRegEx.exec(date);
-			var year = yearRegEx.exec(date);
-			var day = /d*/.exec(dayRegEx.exec(date)); 
+			var month = monthRegEx.exec(date.value);
+			var year = yearRegEx.exec(date.value);
+			var day = dayRegEx.exec(date.value); 
 			
-			var dob = new Date(1996, 03, 31, 0, 0, 0, 0);
+			var string = month + " " + day + " " + year;
+			alert(day);
+			
+			var dob = new Date();
+			
 			document.getElementById('alert3').innerHTML = dob.toString();
-
+			
 
 			
 			}
