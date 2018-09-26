@@ -8,13 +8,31 @@
 				var variable2 = document.getElementById('p1dob_id').value;
 				document.getElementById('alert1').innerHTML = 'The player 1s name is: ' + variable1;
 				document.getElementById('alert2').innerHTML = 'The player 1s dob is: ' + variable2;
+				dateExtraction(p1dob_id.toString());
+				
 			}
 			
+<<<<<<< HEAD
 			function dateExtraction() {
-			var monthRegEx = ^\w+; //Month
-			var yearRegEx = \w+$;  //Year
-			var dayRegEx = [./ -][ ]*(\d*)[,./ -];  //Day with non-numeric characters besides, needs to be stripped
+			var monthRegex = ^\w+; //Month
+			var yearRegex = \w+$;  //Year
+			var dayRegex = [./ -][ ]*(\d*)[,./ -];  //Day with non-numeric characters besides, needs to be stripped
+			dayRegex = dayRegex.exec(\d*);
+=======
+			function dateExtraction(date) {
+			var monthRegEx = /^\w+/; //Month
+			var yearRegEx = /\w+$/;  //Year
+			var dayRegEx = /[.\/ -][ ]*(\d*)[,.\/ -]/;  //Day with non-numeric characters besides, needs to be stripped
 			
+			var month = monthRegEx.exec(date);
+			var year = yearRegEx.exec(date);
+			var day = /d*/.exec(dayRegEx.exec(date)); 
+			
+			var dob = new Date(1996, 03, 31, 0, 0, 0, 0);
+			document.getElementById('alert3').innerHTML = dob.toString();
+>>>>>>> fdb90055cbf722e084fced64d4037b8820b505fe
+			
+			var playerBirth = new Date(yearRegex, monthRegex, dayRegex, 0, 0, 0, 0);
 			
 			}
 
@@ -32,6 +50,7 @@
 			<input type="button" value="Submit" onclick="wawa()" />
 			<div id="alert1" style="color: red"></div>
 			<div id="alert2" style="color: red"></div>
+			<div id="alert3" style="color: blue"></div>
 		</form>
 
 	</body>
