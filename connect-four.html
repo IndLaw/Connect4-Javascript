@@ -7,7 +7,8 @@
 			var player2
 			var p1dob
 			var p2dob
-			var old
+			var oldest
+			var youngest
 		
 			function wawa() {
 				var variable1 = document.getElementById('p1name_id').value;
@@ -24,8 +25,8 @@
 			
 				player2 = window.prompt("Player 2, please enter your name.", "Player 2"); 
 				p2dob = window.prompt("Hello " + player2 + ", please enter your date of birth.", "1/2/2000");
-			
-			
+	
+				compare(p1dob, p2dob);
 			
 			}
 			
@@ -35,7 +36,21 @@
 				var first = dateExtraction(dob1);
 				var second = dateExtraction(dob2);
 				
-				
+				if (first.getTime() < second.getTime()) {
+					document.getElementById('instructions').innerHTML = player1 + " is the oldest! You will start first.";
+					player1 = oldest;
+					player2 = youngest;
+				} 
+				else if (second.getTime() < first.getTime()){ 
+					document.getElementById('instructions').innerHTML = player2 + " is the oldest! You will start first.";
+					player2 = oldest;
+					player1 = youngest;
+				}
+				else {
+					document.getElementById('instructions').innerHTML = first+ " " + second + " You are both the same age! " + player2 + " will go first by default.";
+					player2 = oldest;
+					player1 = youngest;
+				}
 				
 			}
 
@@ -45,17 +60,15 @@
 				var yearRegEx = /\w+$/;  //Year
 				var dayRegEx = /[.\/ -][ ]*(\d*)[,.\/ -]/;  //Day with non-numeric characters besides, needs to be stripped
 
-				
-				var month = monthRegEx.exec(date.value);
-				var year = yearRegEx.exec(date.value);
-				var day = dayRegEx.exec(date.value); 
+				var month = monthRegEx.exec(date);
+				var year = yearRegEx.exec(date);
+				var day = dayRegEx.exec(date); 
 				day = /\d\d*/.exec(day);
 				
 				var string = month + " " + day + " " + year;
-				alert(day);
 				
+				<!-- alert(string); -->
 				var dob = new Date(string);
-				
 				return dob;
 			}
 
@@ -64,20 +77,11 @@
 	<body>
 	
 		<h2 class=title; id=hello>Welcome to Connect Four!</h2>
-		<h2 class=title; id=instructions>To begin, please enter your name and date of birth, Player 1.</h1>
+		<h2 class=title; id=instructions></h1>
 
 		<p id="demo"></p> 
 		<form>
 			<script>getInfo();</script>
-			<!-- <script>compare();</script> -->
-			
-			<!-- <input type="text" id="p1name_id" value="">
-			<input type="text" id="p1dob_id" value="">
-			<input type="button" value="Submit" onclick="wawa()" />
-			
-			<div id="alert1" style="color: red"></div>
-			<div id="alert2" style="color: red"></div>
-			<div id="alert3" style="color: blue"></div> -->
 		</form>
 
 	</body>
