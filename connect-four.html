@@ -27,11 +27,11 @@
 			<!-- Player Configuration -->
 			
 			var player1;
-			var player2;
-			var p1dob;
-			var p2dob;
-			var oldest;
-			var youngest;
+				player2,
+				p1dob,
+				p2dob,
+				oldest,
+				youngest;
 			
 			function getInfo(){
 				player1 = window.prompt("Player 1, please enter your name.", "Player 1");
@@ -47,8 +47,8 @@
 			
 			
 			function compare(dob1, dob2){
-				var first = dateExtraction(dob1);
-				var second = dateExtraction(dob2);
+				var first = dateExtraction(dob1),
+					second = dateExtraction(dob2);
 				
 				if (first.getTime() < second.getTime()) {
 					document.getElementById('instructions').innerHTML = player1 + " is the oldest! You will start first.";
@@ -74,9 +74,9 @@
 				var yearRegEx = /\w+$/;  //Year
 				var dayRegEx = /[.\/ -][ ]*(\d*)[,.\/ -]/;  //Day with non-numeric characters besides, needs to be stripped
 
-				var month = monthRegEx.exec(date);
-				var year = yearRegEx.exec(date);
-				var day = dayRegEx.exec(date); 
+				var month = monthRegEx.exec(date),
+					year = yearRegEx.exec(date),
+					day = dayRegEx.exec(date); 
 				day = /\d\d*/.exec(day);
 				
 				var string = month + " " + day + " " + year;
@@ -92,8 +92,8 @@
 			
 			<!-- Begin game configuration -->
 			function tokenCounter(){
-				var oldTokens = 21;
-				var yngTokens = 21;
+				var oldTokens = 21,
+					yngTokens = 21;
 
 			document.getElementById('p1tokes').innerHTML = oldest + "'s remaning tokens: " + oldTokens;
 			document.getElementById('p2tokes').innerHTML = youngest + "'s remaning tokens: " + yngTokens;
@@ -111,31 +111,26 @@
 			
 			}
 			
-			function startTime() {
-				var today = new Date();
-				var h = today.getHours();
-				var m = today.getMinutes();
-				var s = today.getSeconds();
-				m = checkTime(m);
-				s = checkTime(s);
-				document.getElementById('time').innerHTML =
-				h + ":" + m + ":" + s;
-			}
+			function addBlack(){
 			
-			function checkTime(i) {
-				if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-				return i;
+			
+			}	
+			
+			function addRed(){
+			
+			
+			
 			}
 			<!-- End game configuration -->
 			
-
+			
 		</script>
 	</head>
-	<body onload="startTime()">
+	<body >
 	
 		<h2 class=title; id=hello>Welcome to Connect Four!</h2>
 		<h2 class=title; id=instructions></h2>
-		<div id="time" style="font-weight:bold"></div>
+		<h3>00:00:00</h3>
 		
 		
 		<table id="Tokens">
@@ -149,66 +144,94 @@
 		<script>
 		getInfo();
 		tokenCounter();
+		
+		<!-- Begin time -->
+			var h3 = document.getElementsByTagName('h3')[0],
+				seconds = 0, minutes = 0, hours = 0,
+				t;
+
+			function add() {
+				seconds++;
+				if (seconds >= 60) {
+					seconds = 0;
+					minutes++;
+					if (minutes >= 60) {
+						minutes = 0;
+						hours++;
+					}
+				}
+				
+			h3.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+			timer();
+			}
+			function timer() {
+				t = setTimeout(add, 1000);
+			}
+			timer();
+			<!-- End time -->
+			
 		</script>
 		
-		
+
 		
 		<table id="gameBoard"align="center">
 			<tr>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.0></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.1></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.2></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.3></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.4></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.5></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.6></td>
-			</tr>
-			<tr>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.0></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.1></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.2></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.3></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.4></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.5></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.6></td>
-			</tr>
-			<tr>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.0></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.1></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.2></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.3></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.4></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.5></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.6></td>
-			</tr>
-			<tr>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.0></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.1></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.2></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.3></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.4></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.5></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.6></td>
-			</tr>
-			<tr>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.0></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.1></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.2></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.3></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.4></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.5></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.6></td>
-			</tr>
-			<tr>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.0></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.1></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.2></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.3></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.4></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.5></td>
-				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.6></td>
+				<td id=c0.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" onclick=this.src="images/red-circle.png"></td>
+				<td id=c0.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c0.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c0.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c0.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c0.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c0.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+			</tr>  
+			<tr>   
+				<td id=c1.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c1.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c1.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c1.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c1.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c1.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c1.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+			</tr>  
+			<tr>   
+				<td id=c2.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c2.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c2.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c2.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c2.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c2.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c2.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+			</tr>  
+			<tr>   
+				<td id=c3.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c3.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c3.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c3.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c3.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c3.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c3.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+			</tr>  
+			<tr>   
+				<td id=c4.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c4.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c4.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c4.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c4.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c4.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c4.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+			</tr>  
+			<tr>   
+				<td id=c5.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c5.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c5.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c5.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c5.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c5.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+				<td id=c5.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
 			</tr>
 		</table>
+
 			
 
 	</body>
