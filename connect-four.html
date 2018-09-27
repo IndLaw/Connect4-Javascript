@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html>
 	<head>
+	<style>
+		table, th, td {
+			<!-- border: 1px solid blue; -->
+			<!-- border-collapse: collapse; -->
+		}
+		th, td {
+			padding: 15px;
+			text-align: center;
+		}
+		table#gameBoard {
+			width: 1px;    
+			background-color: #FFFF66;
+		}
+		
+		table#Tokens {
+			width: 100%;    
+		}
+		
+		
+	</style>
 		<h1 class=title>Connect Four</h1>
 		<script  type="text/javascript">
-			var player1
-			var player2
-			var p1dob
-			var p2dob
-			var oldest
-			var youngest
-		
-			function wawa() {
-				var variable1 = document.getElementById('p1name_id').value;
-				var variable2 = document.getElementById('p1dob_id').value;
-				document.getElementById('alert1').innerHTML = 'The player 1s name is: ' + variable1;
-				document.getElementById('alert2').innerHTML = 'The player 1s dob is: ' + variable2;
-				dateExtraction(p1dob_id);
-				
-			}
+
+			<!-- Player Configuration -->
+			
+			var player1;
+			var player2;
+			var p1dob;
+			var p2dob;
+			var oldest;
+			var youngest;
 			
 			function getInfo(){
 				player1 = window.prompt("Player 1, please enter your name.", "Player 1");
@@ -38,18 +52,18 @@
 				
 				if (first.getTime() < second.getTime()) {
 					document.getElementById('instructions').innerHTML = player1 + " is the oldest! You will start first.";
-					player1 = oldest;
-					player2 = youngest;
+					oldest = player1;
+					youngest = player2;
 				} 
 				else if (second.getTime() < first.getTime()){ 
 					document.getElementById('instructions').innerHTML = player2 + " is the oldest! You will start first.";
-					player2 = oldest;
-					player1 = youngest;
+					oldest = player2;
+					youngest = player1;
 				}
 				else {
 					document.getElementById('instructions').innerHTML = "You are both the same age! " + player2 + " will go first by default.";
-					player2 = oldest;
-					player1 = youngest;
+					oldest = player2;
+					youngest = player1;
 				}
 				
 			}
@@ -71,18 +85,131 @@
 				var dob = new Date(string);
 				return dob;
 			}
+			
+			<!-- End Player Configuration -->
+			
+			
+			
+			<!-- Begin game configuration -->
+			function tokenCounter(){
+				var oldTokens = 21;
+				var yngTokens = 21;
+
+			document.getElementById('p1tokes').innerHTML = oldest + "'s remaning tokens: " + oldTokens;
+			document.getElementById('p2tokes').innerHTML = youngest + "'s remaning tokens: " + yngTokens;
+			
+			}
+			
+			function gameFunctionality(){
+				var board = [[0,0,0,0,0,0,0],
+							 [0,0,0,0,0,0,0],
+							 [0,0,0,0,0,0,0],
+							 [0,0,0,0,0,0,0],
+							 [0,0,0,0,0,0,0],
+							 [0,0,0,0,0,0,0]];
+			
+			
+			}
+			
+			function startTime() {
+				var today = new Date();
+				var h = today.getHours();
+				var m = today.getMinutes();
+				var s = today.getSeconds();
+				m = checkTime(m);
+				s = checkTime(s);
+				document.getElementById('time').innerHTML =
+				h + ":" + m + ":" + s;
+			}
+			
+			function checkTime(i) {
+				if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+				return i;
+			}
+			<!-- End game configuration -->
+			
 
 		</script>
 	</head>
-	<body>
+	<body onload="startTime()">
 	
 		<h2 class=title; id=hello>Welcome to Connect Four!</h2>
-		<h2 class=title; id=instructions></h1>
-
-		<p id="demo"></p> 
-		<form>
-			<script>getInfo();</script>
-		</form>
+		<h2 class=title; id=instructions></h2>
+		<div id="time" style="font-weight:bold"></div>
+		
+		
+		<table id="Tokens">
+		<tr>
+		<td class=token_display; id=p1tokes align="left" style="font-weight:bold"></td>
+		<td class=token_display; id=p2tokes align="right" style="font-weight:bold"></td>
+		</tr>
+		</table>
+		
+		
+		<script>
+		getInfo();
+		tokenCounter();
+		</script>
+		
+		
+		
+		<table id="gameBoard"align="center">
+			<tr>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.0></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.1></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.2></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.3></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.4></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.5></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.6></td>
+			</tr>
+			<tr>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.0></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.1></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.2></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.3></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.4></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.5></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.6></td>
+			</tr>
+			<tr>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.0></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.1></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.2></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.3></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.4></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.5></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.6></td>
+			</tr>
+			<tr>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.0></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.1></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.2></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.3></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.4></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.5></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.6></td>
+			</tr>
+			<tr>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.0></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.1></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.2></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.3></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.4></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.5></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.6></td>
+			</tr>
+			<tr>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.0></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.1></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.2></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.3></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.4></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.5></td>
+				<td><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.6></td>
+			</tr>
+		</table>
+			
 
 	</body>
 </html>
