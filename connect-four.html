@@ -91,36 +91,286 @@
 			
 			
 			<!-- Begin game configuration -->
+			var config = {
+				blackPlayerName: oldest,
+				redPlayerName: youngest,
+				startingPlayer: oldest,
+				takenMsg: "This position is already taken. Please make another choice.",
+				drawMsg: "This game is a draw.",
+				playerPrefix: "Current Player is: ",
+				winPrefix: "The winner is: ",
+				countToWin: 4,
+			};
+    
+			var currentPlayer = config.startingPlayer;
+
+			var board= [[0,0,0,0,0,0,0],
+						[0,0,0,0,0,0,0],
+						[0,0,0,0,0,0,0],
+						[0,0,0,0,0,0,0],
+						[0,0,0,0,0,0,0],
+						[0,0,0,0,0,0,0]];
+			}
+			
 			function tokenCounter(){
 				var oldTokens = 21,
 					yngTokens = 21;
 
-			document.getElementById('p1tokes').innerHTML = oldest + "'s remaning tokens: " + oldTokens;
-			document.getElementById('p2tokes').innerHTML = youngest + "'s remaning tokens: " + yngTokens;
+			document.getElementById('p1tokes').innerHTML = oldest + "'s remaining tokens: " + oldTokens;
+			document.getElementById('p2tokes').innerHTML = youngest + "'s remaining tokens: " + yngTokens;
 			
 			}
 			
-			function gameFunctionality(){
-				var board = [[0,0,0,0,0,0,0],
-							 [0,0,0,0,0,0,0],
-							 [0,0,0,0,0,0,0],
-							 [0,0,0,0,0,0,0],
-							 [0,0,0,0,0,0,0],
-							 [0,0,0,0,0,0,0]];
-			
-			
+			function convertBoard(){
+			   for (var y = 0; y <= 5; y++) {
+					for (var x = 0; x <= 6; x++) {
+						if (board[y][x] !== 0) {
+							if (board[y][x] == oldest){ //may need to switch x and y back, not completely sure yet
+								// add black checker
+								document.getElementById('c' + y + '.' + x).src = "images/black-circle.png";
+							}
+							else{
+								// add red checker
+								document.getElementById('c' + y + '.' + x).src = "images/red-circle.png";
+							}
+						}
+					}
+				}
 			}
 			
-			function addBlack(){
-			
-			
-			}	
-			
-			function addRed(){
-			
-			
-			
+			function addDiscToBoard(name, x_pos, y_pos) {
+				board[y_pos][x_pos] = name;
 			}
+
+			
+			function changePlayer() {
+				// Change the value of our player variable.
+				if (currentPlayer === oldest) {
+					currentPlayer = youngest;
+				} else {
+					currentPlayer = oldest;
+				}
+
+				// Update the UI.
+				alert(currentPlayer + "'s turn.");
+				
+			}			
+			
+			
+			function dropToBottom(x_pos, y_pos) {
+				// Start at the bottom of the column, and step up, 
+				for (var y = 5; y > y_pos; y--) {
+					if (board[y][x_pos] === 0) {
+						return y;
+					}
+				}
+
+				return y_pos;
+			}
+
+			function positionIsTaken(x_pos, y_pos) {
+				var value = board[y_pos][x_pos];
+
+				return value === 0 ? false : true;
+			}
+
+			function gameIsDraw() {
+				for (var y = 0; y <= 5; y++) {
+					for (var x = 0; x <= 6; x++) {
+						if (board[y][x] === 0) {
+							return false;
+						}
+					}
+				}
+
+				// No locations were empty. Return true to indicate that the game is a draw.
+				return true;
+			}
+
+			function horizontalWin() {
+				var currentValue = null,
+					previousValue = 0,
+					tally = 0;
+
+				// Scan each row in series, tallying the length of each series. If a series
+				// ever reaches four, return true for a win.
+				// use in tally to win dom edit
+				for (var y = 0; y <= 5; y++) {
+					for (var x = 0; x <= 6; x++) {
+						currentValue = board[y][x];
+						if (currentValue === previousValue && currentValue !== 0) {
+							tally += 1;
+						} else {
+							// Reset the tally if you find a gap.
+							tally = 0;
+						}
+						if (tally === config.countToWin - 1) {
+							return true;
+						}
+						previousValue = currentValue;
+					}
+
+					// After each row, reset the tally and previous value.
+					tally = 0;
+					previousValue = 0;
+				}
+
+				// No horizontal win was found.
+				return false;
+			}
+
+			function verticalWin() {
+				var currentValue = null,
+					previousValue = 0,
+					tally = 0;
+
+				// Scan each column in series, tallying the length of each series. If a
+				// series ever reaches four, return true for a win.
+				for (var x = 0; x <= 6; x++) {
+					for (var y = 0; y <= 5; y++) {
+						currentValue = board[y][x];
+						if (currentValue === previousValue && currentValue !== 0) {
+							tally += 1;
+						} else {
+							// Reset the tally if you find a gap.
+							tally = 0;
+						}
+						if (tally === config.countToWin - 1) {
+							return true;
+						}
+						previousValue = currentValue;
+					}
+
+					// After each column, reset the tally and previous value.
+					tally = 0;
+					previousValue = 0;
+				}
+
+				// No vertical win was found.
+				return false;
+			}
+
+			function diagonalWin() {
+				var x = null,
+					y = null,
+					xtemp = null,
+					ytemp = null,
+					currentValue = null,
+					previousValue = 0,
+					tally = 0;
+
+				// Test for down-right diagonals across the top.
+				for (x = 0; x <= 6; x++) {
+					xtemp = x;
+					ytemp = 0;
+
+					while (xtemp <= 6 && ytemp <= 5) {
+						currentValue = board[ytemp][xtemp];
+						if (currentValue === previousValue && currentValue !== 0) {
+							tally += 1;
+						} else {
+							// Reset the tally if you find a gap.
+							tally = 0;
+						}
+						if (tally === config.countToWin - 1) {
+							return true;
+						}
+						previousValue = currentValue;
+
+						// Shift down-right one diagonal index.
+						xtemp++;
+						ytemp++;
+					}
+					// Reset the tally and previous value when changing diagonals.
+					tally = 0;
+					previousValue = 0;
+				}
+
+				// Test for down-left diagonals across the top.
+				for (x = 0; x <= 6; x++) {
+					xtemp = x;
+					ytemp = 0;
+
+					while (0 <= xtemp && ytemp <= 5) {
+						currentValue = board[ytemp][xtemp];
+						if (currentValue === previousValue && currentValue !== 0) {
+							tally += 1;
+						} else {
+							// Reset the tally if you find a gap.
+							tally = 0;
+						}
+						if (tally === config.countToWin - 1) {
+							return true;
+						}
+						previousValue = currentValue;
+
+						// Shift down-left one diagonal index.
+						xtemp--;
+						ytemp++;
+					}
+					// Reset the tally and previous value when changing diagonals.
+					tally = 0;
+					previousValue = 0;
+				}
+
+				// Test for down-right diagonals down the left side.
+				for (y = 0; y <= 5; y++) {
+					xtemp = 0;
+					ytemp = y;
+
+					while (xtemp <= 6 && ytemp <= 5) {
+						currentValue = board[ytemp][xtemp];
+						if (currentValue === previousValue && currentValue !== 0) {
+							tally += 1;
+						} else {
+							// Reset the tally if you find a gap.
+							tally = 0;
+						}
+						if (tally === config.countToWin - 1) {
+							return true;
+						}
+						previousValue = currentValue;
+
+						// Shift down-right one diagonal index.
+						xtemp++;
+						ytemp++;
+					}
+					// Reset the tally and previous value when changing diagonals.
+					tally = 0;
+					previousValue = 0;
+				}
+
+				// Test for down-left diagonals down the right side.
+				for (y = 0; y <= 5; y++) {
+					xtemp = 6;
+					ytemp = y;
+
+					while (0 <= xtemp && ytemp <= 5) {
+						currentValue = board[ytemp][xtemp];
+						if (currentValue === previousValue && currentValue !== 0) {
+							tally += 1;
+						} else {
+							// Reset the tally if you find a gap.
+							tally = 0;
+						}
+						if (tally === config.countToWin - 1) {
+							return true;
+						}
+						previousValue = currentValue;
+
+						// Shift down-left one diagonal index.
+						xtemp--;
+						ytemp++;
+					}
+					// Reset the tally and previous value when changing diagonals.
+					tally = 0;
+					previousValue = 0;
+				}
+
+				// No diagonal wins found. Return false.
+				return false;
+			}
+
 			<!-- End game configuration -->
 			
 			
@@ -176,59 +426,59 @@
 
 		
 		<table id="gameBoard"align="center">
-			<tr>
-				<td id=c0.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" onclick=this.src="images/red-circle.png"></td>
-				<td id=c0.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c0.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c0.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c0.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c0.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c0.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-			</tr>  
-			<tr>   
-				<td id=c1.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c1.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c1.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c1.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c1.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c1.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c1.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-			</tr>  
-			<tr>   
-				<td id=c2.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c2.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c2.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c2.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c2.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c2.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c2.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-			</tr>  
-			<tr>   
-				<td id=c3.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c3.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c3.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c3.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c3.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c3.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c3.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-			</tr>  
-			<tr>   
-				<td id=c4.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c4.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c4.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c4.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c4.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c4.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c4.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-			</tr>  
-			<tr>   
-				<td id=c5.0><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c5.1><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c5.2><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c5.3><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c5.4><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c5.5><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
-				<td id=c5.6><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" ></td>
+			<tr> <!-- use onclick in every cell to get coordinates to pass to functions -->
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.0 onclick=></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.1 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.2 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.3 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.4 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.5 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.6 ></td>
+			</tr>                                                                                          
+			<tr>                                                                                           
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.0 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.1 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.2 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.3 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.4 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.5 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.6 ></td>
+			</tr>                                                                                          
+			<tr>                                                                                           
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.0 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.1 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.2 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.3 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.4 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.5 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.6 ></td>
+			</tr>                                                                                          
+			<tr>                                                                                           
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.0 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.1 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.2 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.3 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.4 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.5 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.6 ></td>
+			</tr>                                                                                          
+			<tr>                                                                                           
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.0 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.1 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.2 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.3 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.4 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.5 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.6 ></td>
+			</tr>                                                                                          
+			<tr>                                                                                           
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.0 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.1 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.2 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.3 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.4 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.5 ></td>
+				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.6 ></td>
 			</tr>
 		</table>
 
