@@ -21,7 +21,7 @@
 		
 		
 	</style>
-		<h1 class=title>Connect Four</h1>
+		<h1 class=title  align="center">Connect Four</h1>
 		<script  type="text/javascript">
 
 			<!-- Player Configuration -->
@@ -91,27 +91,7 @@
 			
 			
 			<!-- Begin game configuration -->
-			var config = {
-				blackPlayerName: oldest,
-				redPlayerName: youngest,
-				startingPlayer: oldest,
-				takenMsg: "This position is already taken. Please make another choice.",
-				drawMsg: "This game is a draw.",
-				playerPrefix: "Current Player is: ",
-				winPrefix: "The winner is: ",
-				countToWin: 4,
-			};
-    
-			var currentPlayer = config.startingPlayer;
 
-			var board= [[0,0,0,0,0,0,0],
-						[0,0,0,0,0,0,0],
-						[0,0,0,0,0,0,0],
-						[0,0,0,0,0,0,0],
-						[0,0,0,0,0,0,0],
-						[0,0,0,0,0,0,0]];
-			}
-			
 			function tokenCounter(){
 				var oldTokens = 21,
 					yngTokens = 21;
@@ -122,16 +102,18 @@
 			}
 			
 			function convertBoard(){
+			
 			   for (var y = 0; y <= 5; y++) {
 					for (var x = 0; x <= 6; x++) {
 						if (board[y][x] !== 0) {
-							if (board[y][x] == oldest){ //may need to switch x and y back, not completely sure yet
+						var cellID = 'c' + y + '.' + x + '';
+							if (board[y][x] == oldest){ //color adjustment
 								// add black checker
-								document.getElementById('c' + y + '.' + x).src = "images/black-circle.png";
+								document.getElementById(cellID).src = "images/black-circle.png";
 							}
 							else{
 								// add red checker
-								document.getElementById('c' + y + '.' + x).src = "images/red-circle.png";
+								document.getElementById(cellID).src = "images/red-circle.png";
 							}
 						}
 					}
@@ -139,6 +121,7 @@
 			}
 			
 			function addDiscToBoard(name, x_pos, y_pos) {
+			
 				board[y_pos][x_pos] = name;
 			}
 
@@ -156,15 +139,22 @@
 				
 			}			
 			
+			<!-- x and y -->
+			<!-- get highest y position -->
+			<!-- drop down -->
+			<!-- if space is taken and not at max position move up -->
+
 			
-			function dropToBottom(x_pos, y_pos) {
+			function dropToBottom(x_pos) {
+				y_pos = 0;
 				// Start at the bottom of the column, and step up, 
 				for (var y = 5; y > y_pos; y--) {
+					
 					if (board[y][x_pos] === 0) {
+					<!-- alert(y); -->
 						return y;
 					}
 				}
-
 				return y_pos;
 			}
 
@@ -378,9 +368,9 @@
 	</head>
 	<body >
 	
-		<h2 class=title; id=hello>Welcome to Connect Four!</h2>
-		<h2 class=title; id=instructions></h2>
-		<h3>00:00:00</h3>
+		<h2 class=title; id=hello align="center">Welcome to Connect Four!</h2>
+		<h2 class=title; id=instructions align="center"></h2>
+		<h3 align="center">00:00:00</h3>
 		
 		
 		<table id="Tokens">
@@ -423,62 +413,107 @@
 			
 		</script>
 		
+		<script>
+		<!-- Game Event -->
+			
+			var blackPlayerName = oldest;
+			var redPlayerName = youngest;
+			var takenMsg = "This position is already taken. Please make another choice.";
+			var drawMsg = "This game is a draw.";
+			var playerPrefix = "Current Player is: ";
+			var winPrefix = "The winner is: ";
+			var countToWin = 4;
+
+    
+			var currentPlayer = oldest;
+			
+
+			var board = [[0,0,0,0,0,0,0],
+						 [0,0,0,0,0,0,0],
+						 [0,0,0,0,0,0,0],
+						 [0,0,0,0,0,0,0],
+						 [0,0,0,0,0,0,0],
+						 [0,0,0,0,0,0,0]];
+		
+			function test(x, y){
+			var x_pos = x;
+			var y_pos = y;
+			document.getElementById('instructions').innerHTML = "   ";
+			document.getElementById('hello').innerHTML = "   ";
+
+			y_pos = dropToBottom(y_pos, x_pos);
+			
+
+			if (positionIsTaken(x_pos, y_pos)) {
+				alert(takenMsg);
+				return;
+			}
+
+			addDiscToBoard(currentPlayer, x_pos, y_pos);
+			convertBoard();
+			
+			
+			changePlayer();
+			}
+		
+		<!-- Game Event -->
+		</script>
 
 		
 		<table id="gameBoard"align="center">
 			<tr> <!-- use onclick in every cell to get coordinates to pass to functions -->
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.0 onclick=></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.1 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.2 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.3 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.4 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.5 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.6 ></td>
 			</tr>                                                                                          
 			<tr>                                                                                           
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.0 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.1 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.2 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.3 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.4 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.5 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.6 ></td>
 			</tr>                                                                                          
 			<tr>                                                                                           
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.0 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.1 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.2 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.3 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.4 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.5 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.6 ></td>
 			</tr>                                                                                          
 			<tr>                                                                                           
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.0 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.1 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.2 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.3 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.4 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.5 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.6 ></td>
-			</tr>                                                                                          
-			<tr>                                                                                           
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.0 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.1 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.2 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.3 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.4 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.5 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.6 ></td>
-			</tr>                                                                                          
-			<tr>                                                                                           
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.0 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.1 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.2 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.3 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.4 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.5 ></td>
-				<td ><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.6 ></td>
+			</tr>                                                                                                                                                  
+			<tr>                                                                                                                                                   
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.6 ></td>
+			</tr>                                                                                                                                                  
+			<tr>                                                                                                                                                   
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.6 ></td>
 			</tr>
 		</table>
 
