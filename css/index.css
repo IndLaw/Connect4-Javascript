@@ -1,4 +1,6 @@
-body {background-color: ffffff;}
+body {
+	background-color: powderblue;
+	}
 
 @font-face {
     font-family: 'coffee_morning_sansregular';
