@@ -1,0 +1,48 @@
+body {background-color: fbf0e4;}
+
+@font-face {
+    font-family: 'coffee_morning_sansregular';
+    src: url('coffeemorning-reg-webfont.woff2') format('woff2'),
+         url('coffeemorning-reg-webfont.woff') format('woff');
+    font-weight: normal;
+	font-size: large;
+    font-style: normal;
+	color: 8B4513;
+
+}
+
+#hello {
+    font-family: coffee_morning_sansregular	
+}
+
+#instructions {
+    font-family: coffee_morning_sansregular	
+}
+
+#p1tokes {
+    font-family: coffee_morning_sansregular	
+}
+#p2tokes {
+    font-family: coffee_morning_sansregular	
+}
+
+.title { 
+	font-family: coffee_morning_sansregular
+}
+
+.button { 
+	font-family: coffee_morning_sansregular
+}
+
+.card-text {
+	font-family: coffee_morning_sansregular
+}
+
+.awesome { 
+	font-family: coffee_morning_sansregular
+}
+
+.lead { 
+    font-family: coffee_morning_sansregular
+    
+}

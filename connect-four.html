@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<style>
 		table, th, td {
 
@@ -444,7 +445,7 @@
 				// Save winner name and time to file and open new page
 				alert(winPrefix + currentPlayer + " won in " + h3.textContent);
 				saveAndOpen(currentPlayer, h3.textContent);
-				document.getElementByClassName('button').innerHTML = "Play Again?;
+				document.getElementByClassName('button').innerHTML = "Play Again?";
 				return;
 
 			} else if (gameIsDraw()) {
