@@ -31,8 +31,8 @@ body {background-color: ffffff;}
 }
 
 .button { 
-	font-family: coffee_morning_sansregular
-    background-color: #4CAF50;
+	background-color: black;
+	font-family: coffee_morning_sansregular;  
     border: none;
     color: white;
     padding: 15px 25px;
@@ -44,17 +44,4 @@ body {background-color: ffffff;}
 
 .button:hover {
     background-color: red;
-}
-
-.card-text {
-	font-family: coffee_morning_sansregular
-}
-
-.awesome { 
-	font-family: coffee_morning_sansregular
-}
-
-.lead { 
-    font-family: coffee_morning_sansregular
-    
 }
