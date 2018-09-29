@@ -3,7 +3,8 @@
 	<head>
 	<style>
 		table, th, td {
-
+			<!-- border: 1px solid blue; -->
+			<!-- border-collapse: collapse; -->
 		}
 		th, td {
 			padding: 15px;
@@ -80,6 +81,7 @@
 				
 				var string = month + " " + day + " " + year;
 				
+				<!-- alert(string); -->
 				var dob = new Date(string);
 				return dob;
 			}
@@ -136,7 +138,12 @@
 				alert(currentPlayer + "'s turn.");
 				
 			}			
-		
+			
+			<!-- x and y -->
+			<!-- get highest y position -->
+			<!-- drop down -->
+			<!-- if space is taken and not at max position move up -->
+
 			
 			function dropToBottom(x_pos) {
 				y_pos = 0;
@@ -144,6 +151,7 @@
 				for (var y = 5; y > y_pos; y--) {
 					
 					if (board[y][x_pos] === 0) {
+					<!-- alert(y); -->
 						return y;
 					}
 				}
@@ -165,7 +173,7 @@
 					}
 				}
 
-				// the game is a draw.
+				// No locations were empty. Return true to indicate that the game is a draw.
 				return true;
 			}
 
@@ -176,6 +184,7 @@
 
 				// Scan each row in series, tallying the length of each series. If a series
 				// ever reaches four, return true for a win.
+				// use in tally to win dom edit
 				for (var y = 0; y <= 5; y++) {
 					for (var x = 0; x <= 6; x++) {
 						currentValue = board[y][x];
@@ -185,16 +194,18 @@
 							// Reset the tally if you find a gap.
 							tally = 0;
 						}
-						if (tally === countToWin - 1) {
+						if (tally === config.countToWin - 1) {
 							return true;
 						}
 						previousValue = currentValue;
 					}
 
+					// After each row, reset the tally and previous value.
 					tally = 0;
 					previousValue = 0;
 				}
 
+				// No horizontal win was found.
 				return false;
 			}
 
@@ -203,24 +214,29 @@
 					previousValue = 0,
 					tally = 0;
 
+				// Scan each column in series, tallying the length of each series. If a
+				// series ever reaches four, return true for a win.
 				for (var x = 0; x <= 6; x++) {
 					for (var y = 0; y <= 5; y++) {
 						currentValue = board[y][x];
 						if (currentValue === previousValue && currentValue !== 0) {
 							tally += 1;
 						} else {
+							// Reset the tally if you find a gap.
 							tally = 0;
 						}
-						if (tally === countToWin - 1) {
+						if (tally === config.countToWin - 1) {
 							return true;
 						}
 						previousValue = currentValue;
 					}
 
+					// After each column, reset the tally and previous value.
 					tally = 0;
 					previousValue = 0;
 				}
 
+				// No vertical win was found.
 				return false;
 			}
 
@@ -233,6 +249,7 @@
 					previousValue = 0,
 					tally = 0;
 
+				// Test for down-right diagonals across the top.
 				for (x = 0; x <= 6; x++) {
 					xtemp = x;
 					ytemp = 0;
@@ -242,20 +259,24 @@
 						if (currentValue === previousValue && currentValue !== 0) {
 							tally += 1;
 						} else {
+							// Reset the tally if you find a gap.
 							tally = 0;
 						}
-						if (tally === countToWin - 1) {
+						if (tally === config.countToWin - 1) {
 							return true;
 						}
 						previousValue = currentValue;
 
+						// Shift down-right one diagonal index.
 						xtemp++;
 						ytemp++;
 					}
+					// Reset the tally and previous value when changing diagonals.
 					tally = 0;
 					previousValue = 0;
 				}
 
+				// Test for down-left diagonals across the top.
 				for (x = 0; x <= 6; x++) {
 					xtemp = x;
 					ytemp = 0;
@@ -265,20 +286,24 @@
 						if (currentValue === previousValue && currentValue !== 0) {
 							tally += 1;
 						} else {
+							// Reset the tally if you find a gap.
 							tally = 0;
 						}
-						if (tally === countToWin - 1) {
+						if (tally === config.countToWin - 1) {
 							return true;
 						}
 						previousValue = currentValue;
 
+						// Shift down-left one diagonal index.
 						xtemp--;
 						ytemp++;
 					}
+					// Reset the tally and previous value when changing diagonals.
 					tally = 0;
 					previousValue = 0;
 				}
 
+				// Test for down-right diagonals down the left side.
 				for (y = 0; y <= 5; y++) {
 					xtemp = 0;
 					ytemp = y;
@@ -288,20 +313,24 @@
 						if (currentValue === previousValue && currentValue !== 0) {
 							tally += 1;
 						} else {
+							// Reset the tally if you find a gap.
 							tally = 0;
 						}
-						if (tally === countToWin - 1) {
+						if (tally === config.countToWin - 1) {
 							return true;
 						}
 						previousValue = currentValue;
 
+						// Shift down-right one diagonal index.
 						xtemp++;
 						ytemp++;
 					}
+					// Reset the tally and previous value when changing diagonals.
 					tally = 0;
 					previousValue = 0;
 				}
 
+				// Test for down-left diagonals down the right side.
 				for (y = 0; y <= 5; y++) {
 					xtemp = 6;
 					ytemp = y;
@@ -311,20 +340,24 @@
 						if (currentValue === previousValue && currentValue !== 0) {
 							tally += 1;
 						} else {
+							// Reset the tally if you find a gap.
 							tally = 0;
 						}
-						if (tally === countToWin - 1) {
+						if (tally === config.countToWin - 1) {
 							return true;
 						}
 						previousValue = currentValue;
 
+						// Shift down-left one diagonal index.
 						xtemp--;
 						ytemp++;
 					}
+					// Reset the tally and previous value when changing diagonals.
 					tally = 0;
 					previousValue = 0;
 				}
 
+				// No diagonal wins found. Return false.
 				return false;
 			}
 
@@ -378,38 +411,17 @@
 			timer();
 			<!-- End time -->
 			
-			<!-- Save File -->
-			function saveAndOpen(name, time){
-			
-				
-				var existing = localStorage.getItem('Score');
-
-				// If no existing data, use the value by itself
-				// Otherwise, add the new value to it
-				var data = existing ? existing + "<br>" + name + "    "  + time : name + "    "  + time;
-
-				// Save back to localStorage
-				localStorage.setItem('Score', data);
-				
-				var scorecard = window.open();
-				
-				scorecard.document.open();
-				scorecard.document.write(localStorage.getItem('Score'));
-				scorecard.document.close();
-			
-			}
-			
-			
-			<!-- end Saviour -->
-
-			<!-- Game Event -->
+		</script>
+		
+		<script>
+		<!-- Game Event -->
 			
 			var blackPlayerName = oldest;
 			var redPlayerName = youngest;
 			var takenMsg = "This position is already taken. Please make another choice.";
 			var drawMsg = "This game is a draw.";
 			var playerPrefix = "Current Player is: ";
-			var winPrefix = "Congratulations! ";
+			var winPrefix = "The winner is: ";
 			var countToWin = 4;
 
     
@@ -423,14 +435,15 @@
 						 [0,0,0,0,0,0,0],
 						 [0,0,0,0,0,0,0]];
 		
-			function game(x, y){
+			function test(x, y){
 			var x_pos = x;
 			var y_pos = y;
-			document.getElementById('instructions').innerHTML = ".";
-			document.getElementById('hello').innerHTML = "__________";
+			document.getElementById('instructions').innerHTML = "   ";
+			document.getElementById('hello').innerHTML = "   ";
 
-			y_pos = dropToBottom(x_pos);
+			y_pos = dropToBottom(y_pos, x_pos);
 			
+
 			if (positionIsTaken(x_pos, y_pos)) {
 				alert(takenMsg);
 				return;
@@ -439,21 +452,6 @@
 			addDiscToBoard(currentPlayer, x_pos, y_pos);
 			convertBoard();
 			
-			// Check for winner.
-			if (verticalWin() || horizontalWin() || diagonalWin()) {
-				// Save winner name and time to file and open new page
-				alert(winPrefix + currentPlayer + " won in " + h3.textContent);
-				saveAndOpen(currentPlayer, h3.textContent);
-				document.getElementByClassName('button').innerHTML = "Play Again?;
-				return;
-
-			} else if (gameIsDraw()) {
-				// Destroy our click listener to prevent further play.
-				alert(drawMsg);
-				scorecard.document.open();
-				document.getElementByClassName('button').innerHTML = "Play Again?";
-				return;
-			}
 			
 			changePlayer();
 			}
@@ -461,64 +459,63 @@
 		<!-- Game Event -->
 		</script>
 
-		<!-- For tally, just insert the variable into the instruction element -->
-		<table id="gameBoard" align="center">
+		
+		<table id="gameBoard"align="center">
 			<tr> <!-- use onclick in every cell to get coordinates to pass to functions -->
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c0.0 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c0.1 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c0.2 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c0.3 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c0.4 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c0.5 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c0.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c0.6 ></td>
 			</tr>                                                                                          
 			<tr>                                                                                           
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c1.0 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c1.1 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c1.2 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c1.3 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c1.4 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c1.5 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c1.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c1.6 ></td>
 			</tr>                                                                                          
 			<tr>                                                                                           
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c2.0 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c2.1 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c2.2 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c2.3 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c2.4 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c2.5 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c2.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c2.6 ></td>
 			</tr>                                                                                          
 			<tr>                                                                                           
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c3.0 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c3.1 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c3.2 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c3.3 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c3.4 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c3.5 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c3.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c3.6 ></td>
 			</tr>                                                                                                                                                  
 			<tr>                                                                                                                                                   
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c4.0 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c4.1 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c4.2 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c4.3 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c4.4 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c4.5 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c4.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c4.6 ></td>
 			</tr>                                                                                                                                                  
 			<tr>                                                                                                                                                   
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c5.0 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c5.1 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c5.2 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c5.3 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c5.4 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c5.5 ></td>
-				<td onclick="game(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:80px;height:80px;" id=c5.6 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.0 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.1 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.2 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.3 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.4 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.5 ></td>
+				<td onclick="test(this.cellIndex, this.parentNode.rowIndex)"><img src="images/white-circle.png" alt="Empty" style="width:70px;height:70px;" id=c5.6 ></td>
 			</tr>
 		</table>
-		<button class="button" onclick="location.reload();">Reset</button>
 
 			
 
