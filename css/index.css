@@ -1,18 +1,18 @@
-body {background-color: fbf0e4;}
+body {background-color: ffffff;}
 
 @font-face {
     font-family: 'coffee_morning_sansregular';
     src: url('coffeemorning-reg-webfont.woff2') format('woff2'),
          url('coffeemorning-reg-webfont.woff') format('woff');
     font-weight: normal;
-	font-size: large;
+	font-size: 400px;
     font-style: normal;
 	color: 8B4513;
 
 }
 
 #hello {
-    font-family: coffee_morning_sansregular	
+    font-family: coffee_morning_sansregular
 }
 
 #instructions {
@@ -32,6 +32,18 @@ body {background-color: fbf0e4;}
 
 .button { 
 	font-family: coffee_morning_sansregular
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.button:hover {
+    background-color: red;
 }
 
 .card-text {
